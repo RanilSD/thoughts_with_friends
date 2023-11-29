@@ -34,7 +34,7 @@ const userController = {
 
     //deleting a user
     deleteUser(req, res) {
-        User.findOneAndDelete({ _id: req.params.id }).then((user) => !user ? res.status(404).json({ message: 'No user with this ID'}): Thought.delereMany(
+        User.findOneAndDelete({ _id: req.params.id }).then((user) => !user ? res.status(404).json({ message: 'No user with this ID'}): Thought.deleteMany(
             {
                 _id: {
                     $in: user.thoughts
