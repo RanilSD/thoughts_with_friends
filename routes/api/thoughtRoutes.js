@@ -15,13 +15,16 @@ router.route("/").get(getAllThoughts).post(createThought);
 
 //setting up get one, put, and delete at /api/thoughts/:id
 router
-.route("/:thoughtId")
+.route("/:id")
 .get(getThoughtById)
 .put(updateThought)
 .delete(deleteThought);
 
+
+
 router.route("/:thoughtId/reactions/:reactionId").delete(deleteReaction);
 router.route("/:thoughtId/reactions").post(addReaction);
+
 
 
 module.exports = router;

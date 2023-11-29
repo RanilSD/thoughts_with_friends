@@ -4,13 +4,16 @@ const { Thought, User } = require("../models");
 const userController = {
     //getting all the users
     getAllUsers(req, res) {
-        User.find().then((users) => res.json(users)).catch((err) => res.status(500).json(err));
+        User.find().then((users) => res.json(users))
+        .catch((err) => res.status(500).json(err));
 
     },
 
     // creating user
     createUser(req, res) {
-        User.create(req.body).then((dbUserData) => res.json(dbUserData)).catch((err) => res.status(500).json(err));
+        User.create(req.body)
+        .then((dbUserData) => res.json(dbUserData))
+        .catch((err) => res.status(500).json(err));
 
     },
 
@@ -34,18 +37,22 @@ const userController = {
 
     //deleting a user
     deleteUser(req, res) {
-        User.findOneAndDelete({ _id: req.params.id }).then((user) => !user ? res.status(404).json({ message: 'No user with this ID'}): Thought.deleteMany(
+        User.findOneAndDelete({ _id: req.params.id })
+        .then((user) => !user ? res.status(404).json({ message: 'No user with this ID'}): Thought.deleteMany(
             {
                 _id: {
                     $in: user.thoughts
                 }
-            })).then(() => res.json({ message: 'User and apps associated deleted'})).catch((err) => res.status(500).json(err));
+            })).then(() => res.json({ message: 'User and apps associated deleted'}))
+            .catch((err) => res.status(500).json(err));
 
     },
 
     //get users by ID
     getUserById(req, res) {
-        User.findOne({_id: req.params.id}).then((user) => !user ? res.status(404).json({message: 'No users with this ID'}) : res.json(user)).catch((err) => res.status(500).json(err));
+        User.findOne({_id: req.params.id})
+        .then((user) => !user ? res.status(404).json({message: 'No users with this ID'}) : res.json(user))
+        .catch((err) => res.status(500).json(err));
 
     },
 
