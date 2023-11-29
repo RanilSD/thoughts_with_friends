@@ -7,6 +7,8 @@ mongoose.connect('mongodb://localhost:27017/thoughts_with_friendsDB', {
     useUnifiedTopology: true,
 })
 
+
+
 //exporting the connection
 
 module.exports = mongoose.connection;
