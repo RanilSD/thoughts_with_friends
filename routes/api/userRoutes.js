@@ -14,11 +14,10 @@ const {
 router.route("/").get(getAllUsers).post(createUser);
 
 //setting up get one, put, and delete at /api/users/:id
-router.route("/:userId").get(getUserById).put(updateUser).delete(deleteUser);
+router.route("/:id").get(getUserById).put(updateUser).delete(deleteUser);
 
 //adding and deleting friend
-router.route("/:userId/friends").post(addFriend);
-router.route("/:userId/friends/:friendId").delete(removeFriend);
+router.route("/:userId/friends/:friendId").post(addFriend).delete(removeFriend);
 
 
 module.exports = router;
