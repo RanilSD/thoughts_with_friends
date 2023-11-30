@@ -1,6 +1,5 @@
 
-const { Thought, User} = require("../models");
-
+const { Thought, User, Reaction } = require("../models");
 
     //getting all thoughts
 
@@ -124,23 +123,76 @@ const { Thought, User} = require("../models");
   },
 
     //adding a reaction
-    addReaction(req, res) {
-      console.log('Adding reaction');
-      console.log(req.body);
+
+    addReaction({params}, res) {
+      console.log('Adding Reaction');
+      console.log(params.body);
       Thought.findOneAndUpdate(
-        { _id: req.params.thoughtId },
-        { $addToSet: { reactions: req.body} },
-        { runValidators: true, new: true }
-      )
-        .then((thought) =>
-          !thought
-            ? res
-                .status(404)
-                .json({ message: 'No friend with this ID :(' })
-            : res.json(thought)
+          { _id: params.thoughtId },
+          { $addToSet: { reactions: params.reactionId } },
+          { new: true, runValidators: true }
         )
-        .catch((err) => res.status(500).json(err));
-    },
+          .then((dbThoughtData) => {
+            if (!dbThoughtData) {
+              res.status(404).json({ message: "No thought with this id" });
+              return;
+            }
+            res.json(dbThoughtData);
+          })
+          .catch((err) => res.json(err));
+      },
+
+    //async addReaction(req, res) {
+     // try {
+      // const reaction = await Reaction.create(req.body);
+      // const thought = await Thought.findOneAndUpdate(
+       //  { _id: req.body.reactionId },
+        // { $addToSet: { reactions: reaction._id } },
+        // { new: true }
+      // );
+   
+      // if (!user) {
+       //  return res.status(404)
+        // .json({ message: 'reaction created with no user id found'})
+      // }
+   
+      // res.json('reaction created!!!');
+    // } catch (err) {
+     //  console.log(err);
+      // res.status(500).json(err);
+    // }
+     // },
+
+   // addReaction({ params, body }, res) {
+     // Thought.findOneAndUpdate(
+       // { _id: params.thoughtId },
+       // { $addToSet: { reactions: body } },
+        //{ runValidators: true, new: true }
+      //).then((dbThoughtData) => {
+        //if (!dbThoughtData) {
+          //res.status(404).json({ mesage: "no thought with this ID" });
+         // return;
+       // }
+       // res.json(dbThoughtData);
+     // }).catch((err) => res.json(err));
+   // },
+    //addReaction(req, res) {
+      //console.log('Adding reaction');
+      //console.log(req.body);
+      //Thought.findOneAndUpdate(
+        //{ _id: req.params.thoughtId },
+        //{ $addToSet: { reactions: req.body} },
+        //{ runValidators: true, new: true }
+      //)
+       // .then((thought) =>
+         // !thought
+           // ? res
+             //   .status(404)
+               // .json({ message: 'No friend with this ID :(' })
+           // : res.json(thought)
+        //)
+        //.catch((err) => res.status(500).json(err));
+    //},
 
     //deleting a reaction
     deleteReaction(req, res) {
