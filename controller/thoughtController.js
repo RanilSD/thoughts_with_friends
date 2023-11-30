@@ -9,34 +9,43 @@ const thoughtController = {
         .then((thought) => res.json(thought))
         .catch((err) => res.status(500).json(err));
     },
-          //.populate({
-           // path: "reactions",
-            //select: "-__v",
-          //})
-          //.select("-__v")
-          //.sort({ _id: -1 })
-          //.then((dbThoughtData) => res.json(dbThoughtData))
-          //.catch((err) => {
-            //console.log(err);
-            //res.sendStatus(400);
-          //});
-      //},
+  
 
     //creating thought to user and getting one thought by id
-    createThought(req, res) {
-      Thought.create(req.body)
-      .then((dbThoughtData) => {
-          return User.findOneAndUpdate(
-              {_id:req.body.userID},
-              {$push:{ thoughts:dbThoughtData._id}},
-              {new:true}
+    async createThought(req, res) {
+     // Thought.create(req.body)
+      //.then((dbThoughtData) => {
+        //  return User.findOneAndUpdate(
+          //    {_id:req.body.userID},
+            //  {$push:{ thoughts:dbThoughtData._id}},
+              //{new:true}
    
-          )
+         // )
        
-      })
-      .then(userData => res.json(userData))
-      .catch((err) => res.status(500).json(err));
+      //})
+      //.then(userData => res.json(userData))
+      //.catch((err) => res.status(500).json(err));
+   //},
+   try {
+    const thought = await Thought.create(req.body);
+    const user = await User.findOneAndUpdate(
+      { _id: req.body.userId },
+      { $addToSet: { thoughts: thought._id } },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404)
+      .json({ message: 'thought created with no user id found'})
+    }
+
+    res.json('thought created!!!');
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
    },
+  
     //updating thought by id
     updateThought(req, res) {
       Thought.findOneAndUpdate({
@@ -87,7 +96,7 @@ const thoughtController = {
               {new:true}
    
           )
-     }).then(() => res.json({message: 'User and associated apps deleted!'}))
+     }).then(() => res.json({message: 'Thought deleted!'}))
      .catch((err) => res.status(500).json(err));
   },
 
