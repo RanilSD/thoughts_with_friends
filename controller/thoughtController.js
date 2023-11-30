@@ -2,13 +2,36 @@
 const { Thought, User} = require("../models");
 
 
-const thoughtController = {
     //getting all thoughts
-    getAllThoughts(req, res) {
-        Thought.find({})
-        .then((thought) => res.json(thought))
-        .catch((err) => res.status(500).json(err));
-    },
+
+
+
+//const thoughtController = {
+
+  //  getAllThoughts(req, res) {
+    //    Thought.find({})
+      //  .then((thought) => res.json(thought))
+        //.catch((err) => res.status(500).json(err));
+    //},
+
+    module.exports = {
+      async getAllThoughts(req, res) {
+        try {
+          const thoughts = await Thought.find();
+          res.json(thoughts);
+        } catch (err) {
+          re.status(500).json(err);
+        }
+      },
+      async getSingleThought(req, res) {
+        try {
+          const thought = await Thought.findOne({ _id: req.params.thoughtId });
+
+        res.json(thought);
+      } catch (err) {
+        res.status(500).json(err)
+      }
+      },
   
 
     //creating thought to user and getting one thought by id
@@ -139,4 +162,4 @@ const thoughtController = {
     }
 
 
-module.exports = thoughtController;
+//module.exports = thoughtController;
