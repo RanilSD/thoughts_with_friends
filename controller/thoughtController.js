@@ -1,4 +1,4 @@
-
+const { ObjectId } = require("mongoose").Types;
 const { Thought, User, Reaction } = require("../models");
 
     //getting all thoughts
@@ -122,25 +122,47 @@ const { Thought, User, Reaction } = require("../models");
      .catch((err) => res.status(500).json(err));
   },
 
-    //adding a reaction
+  // Adding a reaction to thought
+  async addReaction(req, res) {
+    console.log('You are now adding a Reaction');
+    console.log(req.body);
 
-    addReaction({params}, res) {
-      console.log('Adding Reaction');
-      console.log(params.body);
-      Thought.findOneAndUpdate(
-          { _id: params.thoughtId },
-          { $addToSet: { reactions: params.reactionId } },
-          { new: true, runValidators: true }
-        )
-          .then((dbThoughtData) => {
-            if (!dbThoughtData) {
-              res.status(404).json({ message: "No thought with this id" });
-              return;
-            }
-            res.json(dbThoughtData);
-          })
-          .catch((err) => res.json(err));
-      },
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.reactionBody } },
+        { runValidators: true, new: true }
+      );
+
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: 'No thought found with this ID :(' });
+      }
+
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+   // addReaction(req, res) {
+     // console.log('Adding Reaction');
+     // console.log(req.reactionBody);
+     // Thought.findOneAndUpdate(
+         // { _id: req.params.thoughtId },
+         // { $addToSet: { reactions: req.reactionBody } },
+         // { new: true, runValidators: true }
+       // )
+         // .then((dbThoughtData) => {
+           // if (!dbThoughtData) {
+             // res.status(404).json({ message: "No thought with this id" });
+            //  return;
+          //  }
+         //   res.json(dbThoughtData);
+       //   })
+     //     .catch((err) => res.json(err));
+   //   },
 
     //async addReaction(req, res) {
      // try {
