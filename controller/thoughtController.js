@@ -1,5 +1,5 @@
 const { ObjectId } = require("mongoose").Types;
-const { Thought, User, Reaction } = require("../models");
+const { Thought, User } = require("../models");
 
     //getting all thoughts
 
@@ -216,24 +216,45 @@ const { Thought, User, Reaction } = require("../models");
         //.catch((err) => res.status(500).json(err));
     //},
 
-    //deleting a reaction
-    deleteReaction(req, res) {
-      console.log(req.params)
-    
-        Thought.findOneAndUpdate(
+    //deleting a reaction from thought
+
+    async deleteReaction(req, res) {
+      try {
+        const thought = await Thought.findOneAndUpdate(
           { _id: req.params.thoughtId },
-          { $pull: { reactions: { reactionId: req.params.reactionId} } },
+          { $pull: { reactions: { reactionId: req.params.reactionId } } },
           { runValidators: true, new: true }
+        );
+  
+        if (!thought) {
+          return res
+            .status(404)
+            .json({ message: 'No thought found with this ID :(' });
+        }
+  
+        res.json(thought);
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    },
+  };
+   // deleteReaction(req, res) {
+     // console.log(req.params)
+    
+       // Thought.findOneAndUpdate(
+         // { _id: req.params.thoughtId },
+         // { $pull: { reactions: { reactionId: req.params.reactionId} } },
+         // { runValidators: true, new: true }
  
-        ).then((thought) =>
-            !thought
-              ? res
-                  .status(404)
-                  .json({ message: 'No thought with this ID :(' })
-              : res.json(thought)
-          ).catch((err) => res.status(500).json(err));
-      },
-    }
+       // ).then((thought) =>
+         //   !thought
+           //   ? res
+             //     .status(404)
+               //   .json({ message: 'No thought with this ID :(' })
+             // : res.json(thought)
+         // ).catch((err) => res.status(500).json(err));
+     // },
+   // }
 
 
 //module.exports = thoughtController;
