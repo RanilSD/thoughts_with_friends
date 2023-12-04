@@ -130,7 +130,7 @@ const { Thought, User } = require("../models");
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $addToSet: { reactions: req.reactionBody } },
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
       );
 
