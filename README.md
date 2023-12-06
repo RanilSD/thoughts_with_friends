@@ -8,6 +8,7 @@
 - [Licenses](#licenses)
 - [Contributing](#contributing)
 - [Tests](#tests)
+- [Demo](#demo)
 - [Questions](#questions)
 - [Credits](#credits)
 
@@ -38,6 +39,7 @@ Others can contribute by adding css and front end code
 No tests have been written for this project.
 
 ## Demo
+[Untitled_ Dec 6, 2023 12_04 PM.webm](https://github.com/RanilSD/thoughts_with_friends/assets/139150974/1cbbfc70-6ba6-4f2d-a485-599919fe3f62)
 
 ## Questions
 
